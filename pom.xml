@@ -51,7 +51,7 @@
 				<version>${version.gwt-maven-plugin}</version>
 				<configuration>
 					<compileReport>true</compileReport>
-					<runTarget>com.mycompany.gwt.Module/Module.html</runTarget>
+					<runTarget>test/Module.html</runTarget>
 				</configuration>
 				<executions>
 					<execution>
