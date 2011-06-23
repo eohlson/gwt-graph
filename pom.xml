@@ -10,7 +10,7 @@
 
 	<properties>
 		<version.gwt>2.3.0</version.gwt>
-		<version.gwt-maven-plugin>2.2.0</version.gwt-maven-plugin>
+		<version.gwt-maven-plugin>2.3.0</version.gwt-maven-plugin>
 		<version.gin>1.5.0</version.gin>
 		<version.guice>3.0</version.guice>
 	</properties>
