@@ -1,8 +1,12 @@
 package test.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -10,7 +14,32 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 public class Test implements EntryPoint {
 
 	public void onModuleLoad() {
-		ScrollPanel sp = new ScrollPanel(new DrawingCanvas(10000, 10000));
-		RootLayoutPanel.get().add(sp);
+		final GraphComponent component = new GraphComponent();
+		Button draw = new Button("Draw");
+		Button clear = new Button("Clear");
+		
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.add(draw);
+		hp.add(clear);
+		
+		
+		draw.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				component.drawBackground();
+			}
+		});
+		clear.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				component.clearBackground();
+			}
+		});
+		
+		SplitLayoutPanel splitLayoutPanel = new SplitLayoutPanel();
+		splitLayoutPanel.addNorth(hp, 30);
+		splitLayoutPanel.add(component);
+		RootLayoutPanel.get().add(splitLayoutPanel);
+	
 	}
 }
