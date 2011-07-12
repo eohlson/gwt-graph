@@ -33,6 +33,7 @@ public class Test implements EntryPoint {
 			
 			public void onClick(ClickEvent event) {
 				component.clearBackground();
+				component.clear();
 			}
 		});
 		
