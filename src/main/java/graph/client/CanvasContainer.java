@@ -1,13 +1,16 @@
-package test.client;
+package graph.client;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
 import com.google.gwt.event.dom.client.HasMouseOutHandlers;
 import com.google.gwt.event.dom.client.HasMouseOverHandlers;
 import com.google.gwt.event.dom.client.HasMouseUpHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -18,7 +21,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CanvasContainer extends Widget implements HasMouseOverHandlers, HasMouseOutHandlers, HasMouseDownHandlers, HasMouseUpHandlers {
+public class CanvasContainer extends Widget implements HasMouseOverHandlers, HasMouseOutHandlers, HasMouseDownHandlers, HasMouseUpHandlers, HasMouseMoveHandlers {
 
 	private Canvas background;
 	private Canvas objects;
@@ -86,8 +89,8 @@ public class CanvasContainer extends Widget implements HasMouseOverHandlers, Has
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		return addDomHandler(handler, MouseDownEvent.getType());
 	}
-	
-	
-	
-	
+
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+		return addDomHandler(handler, MouseMoveEvent.getType());
+	}
 }

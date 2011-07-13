@@ -1,10 +1,10 @@
-package test.client;
+package graph.client;
 
-import test.client.model.CanvasNode;
+import graph.client.domain.Point;
+import graph.client.model.CanvasNode;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.touch.client.Point;
 
 public class NodeProxy {
 
@@ -41,7 +41,9 @@ public class NodeProxy {
 	}
 	
 	public boolean hit(Point p) {
-		
+		boolean withinX = p.getX() > model.getX() && p.getX() < (model.getX() + model.getWidth());
+		boolean withinY = p.getY() > model.getY() && p.getY() < (model.getY() + model.getHeight());
+		return withinX && withinY;
 	}
 
 	public void drawExample() {

@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                                      http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.mycompany</groupId>
-	<artifactId>webapp</artifactId>
+	<groupId>me.ohlson</groupId>
+	<artifactId>graph</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.5-SNAPSHOT</version>
 
 
 	<properties>
@@ -30,17 +30,9 @@
 		</dependency>
 
 		<!-- Depenency injection -->
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>${version.guice}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt.inject</groupId>
-			<artifactId>gin</artifactId>
-			<version>${version.gin}</version>
-		</dependency>
-
+		<!-- <dependency> <groupId>com.google.inject</groupId> <artifactId>guice</artifactId> 
+			<version>${version.guice}</version> </dependency> <dependency> <groupId>com.google.gwt.inject</groupId> 
+			<artifactId>gin</artifactId> <version>${version.gin}</version> </dependency> -->
 	</dependencies>
 
 	<build>
@@ -48,9 +40,9 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.3.0</version>
+				<version>2.3.0-1</version>
 				<configuration>
-					<compileReport>true</compileReport>
+
 					<runTarget>test/Module.html</runTarget>
 				</configuration>
 				<executions>
@@ -70,28 +62,17 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
-					<warSourceDirectory>war</warSourceDirectory>
-					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/appengine-web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<version>${version.gwt-maven-plugin}</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>compile-report</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

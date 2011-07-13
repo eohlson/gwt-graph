@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module rename-to='test'>
+<module rename-to='graph'>
 
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name='com.google.gwt.user.theme.clean.Clean' />
 
-	<entry-point class='test.client.Test' />
+	<entry-point class='graph.client.GraphEntry' />
 
 	<source path='client' />
 	<source path='shared' />

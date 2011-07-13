@@ -1,4 +1,4 @@
-package test.client;
+package graph.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Test implements EntryPoint {
+public class GraphEntry implements EntryPoint {
 
 	public void onModuleLoad() {
 		final GraphComponent component = new GraphComponent();

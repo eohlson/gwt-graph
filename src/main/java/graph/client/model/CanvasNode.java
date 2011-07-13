@@ -1,31 +1,43 @@
-package test.client.model;
+package graph.client.model;
+
+import graph.client.domain.Point;
 
 public class CanvasNode {
 
-	int x = 0;
-	int y = 0;
+	
+	Point position;
+	
 	int width = 0;
 	int height = 0;
 	
 	public CanvasNode() {
+		position = new Point(0,0);
 	}
 
 	public int getX() {
-		return x;
+		return position.getX();
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		position.setX(x);
 	}
 
 	public int getY() {
-		return y;
+		return position.getY();
 	}
 
 	public void setY(int y) {
-		this.y = y;
+		position.setY(y);
 	}
 
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+	
+	public Point getPosition() {
+		return position;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
