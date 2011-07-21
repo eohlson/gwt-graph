@@ -14,11 +14,15 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.MouseWheelEvent;
+import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class GraphComponent extends Composite {
 
+	double zoomLevel = 1.0;
+	
 	int gridsize = 30;
 
 	final LinkedList<NodeProxy> proxys = new LinkedList<NodeProxy>();
@@ -40,11 +44,25 @@ public class GraphComponent extends Composite {
 	}
 
 	private void initCanvas() {
+		canvasContainer.addMouseWheelHandler(new MouseWheelHandler() {
+			
+			public void onMouseWheel(MouseWheelEvent event) {
+				if (event.isAltKeyDown()) {
+					if (event.isSouth()) {
+						zoomIn();
+					} else {
+						zoomOut();
+					}
+				}
+			}
+		});
+		
 		canvasContainer.addMouseDownHandler(new MouseDownHandler() {
 
 			public void onMouseDown(MouseDownEvent event) {
 				Point point = new Point(event.getX(), event.getY());
-
+				
+				
 				NodeProxy nodeAt = getFirstNodeAt(point);
 
 				if (nodeAt != null) {
@@ -53,13 +71,14 @@ public class GraphComponent extends Composite {
 					moving = nodeAt;
 				} else {
 					CanvasNode node = new CanvasNode();
-					Point click = adjustToGrid(point);
+					Point click = adjustToZoom(point);
+					click = adjustToGrid(point);
 
 					node.setX(click.getX());
 					node.setY(click.getY());
 
 					NodeProxy proxy = new NodeProxy(node);
-					proxy.drawExample();
+					proxy.draw();
 
 					proxys.add(proxy);
 					objectLayer.add(proxy);
@@ -72,7 +91,7 @@ public class GraphComponent extends Composite {
 			public void onMouseMove(MouseMoveEvent event) {
 				if (moving != null) {
 					Point p = getPointerPoint(event);
-					
+					p = adjustToZoom(p);
 					p = adjustToGrid(p);
 					if (!p.equals(moving.getModel().getPosition() ) ) {
 						moving.getModel().setPosition(p);
@@ -127,23 +146,32 @@ public class GraphComponent extends Composite {
 	}
 	
 	public void redrawObject() {
+		canvasContainer.getObjects().save();
+		canvasContainer.getObjects().scale(zoomLevel, zoomLevel);
 		canvasContainer.getObjects().clearRect(0, 0, width, height);
 		for (NodeProxy proxy : objectLayer) {
 			canvasContainer.getObjects().drawImage(proxy.getImage().getCanvasElement(), proxy.getModel()
 					.getX(), proxy.getModel().getY());
 			
 		}
+		canvasContainer.getObjects().restore();
 	}
 	
 	public void redrawMoving() {
+		canvasContainer.getMoving().save();
+		canvasContainer.getMoving().scale(zoomLevel, zoomLevel);
+		
 		canvasContainer.getMoving().clearRect(0, 0, width, height);
 		for (NodeProxy proxy : movingLayer) {
 			canvasContainer.getMoving().drawImage(proxy.getImage().getCanvasElement(), proxy.getModel()
 					.getX(), proxy.getModel().getY());
 		}
+		canvasContainer.getMoving().restore();
 	}
 
 	private NodeProxy getFirstNodeAt(Point p) {
+		p = adjustToZoom(p);
+		
 		for (NodeProxy node : objectLayer) {
 			if (node.hit(p)) {
 				return node;
@@ -157,25 +185,31 @@ public class GraphComponent extends Composite {
 		Context2d bg = canvasContainer.getBackground();
 		bg.save();
 
+		bg.scale(zoomLevel, zoomLevel);
+		int localHeight = (int) (height / zoomLevel);
+		int localWidth = (int) (width / zoomLevel);
+		
+		System.out.println(height + " : " + localHeight);
+		
 		bg.beginPath();
 		bg.setStrokeStyle("#dcdcdc");
 		bg.setLineWidth(1);
-		for (int i = 0; i < height; i = i + gridsize) {
+		for (int i = 0; i < localHeight; i = i + gridsize) {
 			if (i % (5 * gridsize) == 0) {
 				continue;
 			}
 			bg.moveTo(0, i);
-			bg.lineTo(width, i);
+			bg.lineTo(localWidth, i);
 
 		}
 
-		for (int i = 0; i < width; i = i + gridsize) {
+		for (int i = 0; i < localWidth; i = i + gridsize) {
 			if (i % (5 * gridsize) == 0) {
 				continue;
 			}
 
 			bg.moveTo(i, 0);
-			bg.lineTo(i, height);
+			bg.lineTo(i, localHeight);
 		}
 
 		bg.stroke();
@@ -184,14 +218,14 @@ public class GraphComponent extends Composite {
 		bg.setStrokeStyle("#808080");
 		bg.setLineWidth(1);
 
-		for (int i = 0; i < width; i = i + 5 * gridsize) {
+		for (int i = 0; i < localWidth; i = i + 5 * gridsize) {
 			bg.moveTo(i, 0);
-			bg.lineTo(i, height);
+			bg.lineTo(i, localHeight);
 		}
 
-		for (int i = 0; i < height; i = i + 5 * gridsize) {
+		for (int i = 0; i < localHeight; i = i + 5 * gridsize) {
 			bg.moveTo(0, i);
-			bg.lineTo(width, i);
+			bg.lineTo(localWidth, i);
 		}
 
 		bg.stroke();
@@ -206,7 +240,42 @@ public class GraphComponent extends Composite {
 
 	public void clear() {
 		canvasContainer.getObjects().clearRect(0, 0, width, height);
-
 	}
+	
+	public void zoomIn() {
+		setZoomLevel(getZoomLevel() + 0.1);
+	}
+	
+	public void zoomOut() {
+		setZoomLevel(getZoomLevel() - 0.1);
+	}
+
+	public Point adjustToZoom(Point p ) {
+		p.setX((int)(p.getX() / zoomLevel));
+		p.setY((int)(p.getY() / zoomLevel));
+		return p;
+	}
+	
+	private double getZoomLevel() {
+		return zoomLevel;
+	}
+
+	private void setZoomLevel(double zoomLevel) {
+		if (zoomLevel > 10) {
+			zoomLevel = 100;
+		}
+		if (zoomLevel < 0.1) {
+			zoomLevel = 0.1;
+		}
+		
+		this.zoomLevel = zoomLevel;
+		clearBackground();
+		drawBackground();
+		
+		clear();
+		redrawAll();
+	}
+	
+	
 
 }

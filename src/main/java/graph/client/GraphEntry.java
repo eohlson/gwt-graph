@@ -17,11 +17,15 @@ public class GraphEntry implements EntryPoint {
 		final GraphComponent component = new GraphComponent();
 		Button draw = new Button("Draw");
 		Button clear = new Button("Clear");
+		Button zoomIn = new Button("ZoomIn");
+		Button zoomOut = new Button("ZoomOut");
+		
 		
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.add(draw);
 		hp.add(clear);
-		
+		hp.add(zoomIn);
+		hp.add(zoomOut);
 		
 		draw.addClickHandler(new ClickHandler() {
 			
@@ -34,6 +38,19 @@ public class GraphEntry implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				component.clearBackground();
 				component.clear();
+			}
+		});
+		zoomIn.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				component.zoomIn();
+				
+			}
+		});
+		zoomOut.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				component.zoomOut();
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package graph.client;
 
 import graph.client.domain.Point;
+import graph.client.domain.Size;
 import graph.client.model.CanvasNode;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -45,10 +46,20 @@ public class NodeProxy {
 		boolean withinY = p.getY() > model.getY() && p.getY() < (model.getY() + model.getHeight());
 		return withinX && withinY;
 	}
+	
+	//Prepare to extract drawing to interface/class
+	public void draw() {
+		Size s = calculateSize(model, ctx);
+		model.setWidth(s.getWidth());
+		model.setHeight(s.getHeight());
+		draw(model,ctx);
+	}
+	
+	private Size calculateSize(CanvasNode model, Context2d ctx) {
+		return new Size(104, 74);
+	}
 
-	public void drawExample() {
-		model.setWidth(104);
-		model.setHeight(74);
+	private void draw(CanvasNode model, Context2d ctx) {
 		setSizeFromModel();
 
 		Point o = new Point(2,2);
