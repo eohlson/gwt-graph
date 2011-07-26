@@ -1,19 +1,22 @@
 package graph.client.model;
 
 import graph.client.domain.Point;
+import graph.client.domain.Size;
 
 public class CanvasNode {
 
-	
 	Point position;
 	
-	int width = 0;
-	int height = 0;
-	
-	public CanvasNode() {
-		position = new Point(0,0);
-	}
+	Size size;
 
+	private final Object data;
+	
+	public CanvasNode(Object data) {
+		this.data = data;
+		position = new Point(0,0);
+		size = new Size(0,0);
+	}
+	
 	public int getX() {
 		return position.getX();
 	}
@@ -39,18 +42,22 @@ public class CanvasNode {
 	}
 	
 	public int getWidth() {
-		return width;
+		return size.getWidth();
 	}
 
 	public void setWidth(int width) {
-		this.width = width;
+		size.setWidth(width);
 	}
 
 	public int getHeight() {
-		return height;
+		return size.getHeight();
 	}
 
 	public void setHeight(int height) {
-		this.height = height;
+		size.setHeight(height);
+	}
+	
+	public Object getData() {
+		return data;
 	}
 }

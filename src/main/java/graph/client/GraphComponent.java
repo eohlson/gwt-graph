@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -70,7 +72,7 @@ public class GraphComponent extends Composite {
 					movingLayer.add(nodeAt);
 					moving = nodeAt;
 				} else {
-					CanvasNode node = new CanvasNode();
+					CanvasNode node = new CanvasNode("erao");
 					Point click = adjustToZoom(point);
 					click = adjustToGrid(point);
 
@@ -110,6 +112,18 @@ public class GraphComponent extends Composite {
 					moving = null;
 					redrawAll();
 				}
+			}
+		});
+		
+		canvasContainer.addDoubleClickHandler(new DoubleClickHandler() {
+			
+			public void onDoubleClick(DoubleClickEvent event) {
+				Point p = getPointerPoint(event);
+				NodeProxy clickedNode = getFirstNodeAt(p);
+				if  (clickedNode != null) {
+					event.preventDefault();
+				}
+				
 			}
 		});
 	}

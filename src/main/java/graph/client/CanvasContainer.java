@@ -2,6 +2,9 @@ package graph.client;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
 import com.google.gwt.event.dom.client.HasMouseOutHandlers;
@@ -25,7 +28,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CanvasContainer extends Widget implements HasMouseOverHandlers, HasMouseOutHandlers, HasMouseDownHandlers, HasMouseUpHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers {
+public class CanvasContainer extends Widget implements HasMouseOverHandlers, HasMouseOutHandlers, HasMouseDownHandlers, HasMouseUpHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers {
 
 	private Canvas background;
 	private Canvas objects;
@@ -102,7 +105,7 @@ public class CanvasContainer extends Widget implements HasMouseOverHandlers, Has
 		return addDomHandler(handler, MouseWheelEvent.getType());
 	}
 
-
-	
-	
+	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+		return addDomHandler(handler, DoubleClickEvent.getType());
+	}
 }
